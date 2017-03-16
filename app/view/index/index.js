@@ -8,7 +8,7 @@ import * as common from '../../common/';
 require('../../main.css');
 
 let init = () => {
-  let scene, camera, renderer, spotLight, ;
+  let scene, camera, renderer, spotLight;
   let dat, stats;
 
   scene = sceneInit();
@@ -17,7 +17,7 @@ let init = () => {
   stats = statsInit();
   helperInit();
 
-  
+
 };
 
 let sceneInit = () => {

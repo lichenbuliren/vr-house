@@ -44,6 +44,10 @@ var webpackConfig = {
     }]
   },
   plugins: [
+    // 这里配置全局别名，给 OrbitControls 等插件使用
+    new webpack.ProvidePlugin({
+      THREE: 'three'
+    }),
     new UglifyJSPlugin({
       beautify: true,
       sourceMap: true,

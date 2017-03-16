@@ -1,5 +1,5 @@
 import {
-  Three,
+  THREE,
   dat,
   Stats
 } from '../../vendor';
@@ -21,11 +21,11 @@ let init = () => {
 };
 
 let sceneInit = () => {
-  return new Three.Scene();
+  return new THREE.Scene();
 }
 
 let cameraInit = () => {
-  var camera = new Three.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
   return camera;
 }
 
@@ -54,13 +54,6 @@ let spotLightInit = () => {
   spotLight.position.set(10, 10, 30);
   spotLight.castShadow = true;
   return spotLight;
-}
-
-let helperInit = (scene, spotLight) => {
-  var axisHelper = new THREE.AxisHelper(200);
-  var spotLightHelper = new THREE.SpotLightHelper(spotLight);
-  scene.add(spotLightHelper);
-  scene.add(axisHelper);
 }
 
 let resize = (camera, renderer) => {

@@ -1,10 +1,10 @@
-import * as Three from 'three';
-var dat = require('./libs/dat.gui');
-var Stats = require('./libs/stats');
+import * as THREE from 'three';
+require('./libs/OrbitControls');
+var dat = require('./libs/dat.gui.min');
+var Stats = require('./libs/stats.min');
 
 export {
+  THREE,
   dat,
-  Stats,
-  Three
+  Stats
 }
-

@@ -1,4 +1,8 @@
-import { dat, Stats, THREE } from '../../vendor';
+import {
+  dat,
+  Stats,
+  THREE
+} from '../../vendor';
 
 import * as common from '../../common/';
 require('../../main.css');
@@ -11,7 +15,7 @@ let init = () => {
   camera = cameraInit(scene);
 
   var orbitControls = new THREE.OrbitControls(camera);
-  // orbitControls.autoRotate = true;
+  orbitControls.autoRotate = true;
   var clock = new THREE.Clock();
 
   renderer = rendererInit();
@@ -23,8 +27,12 @@ let init = () => {
   scene.add(directionLight);
 
   // 创建一个球体
-  let sphere = createSphere(30, 30, 30);
-  scene.add(sphere);
+  // let sphere = createSphere(30, 30, 30);
+  var sphereGeometry = new THREE.SphereGeometry(30, 20, 20);
+  var sphereSprite = createPoints(sphereGeometry, {
+    size: 2
+  });
+  scene.add(sphereSprite);
 
   let render = () => {
     stats.update();
@@ -39,6 +47,40 @@ let init = () => {
   window.addEventListener('resize', common.util.throttle(resize(camera, renderer), 500), false);
 }
 
+let generateSprite = () => {
+  var canvas = document.createElement('canvas');
+  canvas.width = 16;
+  canvas.height = 16;
+  var context = canvas.getContext('2d');
+  var gradient = context.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2);
+
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  gradient.addColorStop(0.2, 'rgba(0, 255, 255, 1)');
+  gradient.addColorStop(0.4, 'rgba(0, 0, 64, 1)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  var texture = new THREE.Texture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+// 根据给定的几何体，创建粒子系统
+let createPoints = (geom, opts) => {
+  var material = new THREE.PointsMaterial({
+    color: opts.color || 0xffffff,
+    size: opts.size || 3,
+    transparent: opts.transparent || true,
+    blending: opts.blending || THREE.AdditiveBlending,
+    map: generateSprite()
+  });
+
+  var cloud = new THREE.Points(geom, material);
+  return cloud;
+}
+
 let resize = (camera, renderer) => {
   return () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -49,7 +91,7 @@ let resize = (camera, renderer) => {
 
 let createSphere = (radius, widthSegment, heightSegment) => {
   var sphereGeometry = new THREE.SphereGeometry(radius, widthSegment, heightSegment);
-  var sphereMaterial = new THREE.MeshNormalMaterial({
+  var sphereMaterial = new THREE.MeshBasicMaterial({
     shading: THREE.FlatShading
   });
   return new THREE.Mesh(sphereGeometry, sphereMaterial);
@@ -61,7 +103,7 @@ let sceneInit = () => {
 
 let cameraInit = (scene) => {
   var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 250;
+  camera.position.z = 100;
   camera.position.x = -20;
   camera.position.y = 100;
   camera.lookAt(new THREE.Vector3());
@@ -98,6 +140,7 @@ let spotLightInit = (scene) => {
 let helperInit = (scene) => {
   var axisHelper = new THREE.AxisHelper(2000);
   scene.add(axisHelper);
+  return axisHelper;
 }
 
 window.onload = init();

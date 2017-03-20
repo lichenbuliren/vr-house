@@ -17,7 +17,6 @@ let init = () => {
   stats = statsInit();
   helperInit();
 
-
 };
 
 let sceneInit = () => {
